@@ -116,7 +116,11 @@ export default function MaterialCanvas({ mode, texture, ratio, layers, room, ton
       box(3.8, .095, 3.8 / ratio, top(plankEdge))
     }
 
-    const grain = new TextureLoader().load(texture, () => draw(), undefined, () => {
+    const grain = new TextureLoader().load(texture, () => {
+      if (disposed) return
+      draw()
+      root.dataset.ready = 'true'
+    }, undefined, () => {
       if (!disposed) setTextureError(true)
     })
     grain.colorSpace = SRGBColorSpace
@@ -159,6 +163,7 @@ export default function MaterialCanvas({ mode, texture, ratio, layers, room, ton
 
     return () => {
       disposed = true
+      delete root.dataset.ready
       actions.current = null
       resize.disconnect()
       renderer.domElement.removeEventListener('webglcontextlost', contextLost)

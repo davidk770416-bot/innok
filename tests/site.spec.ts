@@ -15,6 +15,7 @@ for (const { name, width, height } of viewports) {
     for (const path of pages) {
       await page.goto(path)
       await expect(page.locator('main h1')).toBeVisible()
+      if (path === '/studio') await expect(page.locator('.material-stage[data-ready="true"] canvas')).toBeVisible({ timeout: 15000 })
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width)
       await page.screenshot({ path: info.outputPath((path.slice(1).replaceAll('/', '-') || 'home') + '.png'), fullPage: true, animations: 'disabled' })
     }

@@ -7,7 +7,7 @@ import { drybackLayers, type Layer } from '@/lib/catalogue'
 
 const Canvas = dynamic(() => import('./material-canvas'), {
   ssr: false,
-  loading: () => <div className="material-stage grid place-items-center" role="status">Loading 3D preview…</div>,
+  loading: () => <div className="material-stage material-loading" role="status"><span>Loading 3D preview…</span></div>,
 })
 const studyTexture = '/oak-material-study.png'
 const emptyLayers: readonly Layer[] = []
