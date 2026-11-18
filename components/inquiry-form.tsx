@@ -38,7 +38,7 @@ export function InquiryForm({ kind, selected }: Props) {
       {quote && <>
         <label className="field">Province or territory<select name="province" autoComplete="address-level1" defaultValue="" required><option value="" disabled>Select province or territory</option>{provinces.map((item) => <option key={item}>{item}</option>)}</select></label>
         <label className="field">Buyer type<select name="buyer" defaultValue="" required><option value="" disabled>Select buyer type</option>{buyerTypes.map((item) => <option key={item}>{item}</option>)}</select></label>
-        <label className="field">Product<select name="product" defaultValue={selected ?? 'undecided'}><option value="undecided">Help me select</option><option value={collection.slug}>{collection.name}</option>{patterns.map((item) => <option key={item.slug} value={item.slug}>{item.name} · {item.code}</option>)}</select></label>
+        <div className="field"><label htmlFor="inquiry-product">Product</label><select id="inquiry-product" name="product" defaultValue={selected ?? 'undecided'}><option value="undecided">Help me select</option><option value={collection.slug}>{collection.name}</option>{patterns.map((item) => <option key={item.slug} value={item.slug}>{item.name} · {item.code}</option>)}</select></div>
         <label className="field form-wide">{kind === 'samples' ? 'Sample quantity' : 'Estimated quantity'}<input name="quantity" placeholder={kind === 'samples' ? 'e.g. 2 samples per colour' : 'e.g. 5,000 sq. ft.'} maxLength={100} required /></label>
       </>}
       <label className="field form-wide">{kind === 'samples' ? 'Sample requirements' : quote ? 'Project details' : 'Message'}<textarea name="message" maxLength={3500} required /></label>
