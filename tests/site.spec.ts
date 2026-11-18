@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import { mil, squareFeet } from '../lib/catalogue'
 
-const pages = ['/', '/products', '/products/dryback-lvt', '/about', '/resources', '/contact', '/quote']
+const pages = ['/', '/products', '/products/dryback-lvt', '/about', '/resources', '/studio', '/contact', '/quote']
 const viewports = [
   { name: 'desktop', width: 1440, height: 1000 },
   { name: 'tablet', width: 820, height: 1100 },
@@ -62,4 +62,19 @@ test('quote endpoint rejects incomplete and cross-origin requests', async ({ req
 test('specification conversions', () => {
   expect(mil(0.508)).toBe(20)
   expect(squareFeet(1)).toBe(10.76)
+})
+
+test('studio modes and sample flow', async ({ page }) => {
+  await page.goto('/studio')
+  await page.getByRole('button', { name: 'Exploded view' }).click()
+  await expect(page.getByText('Printed design layer')).toBeVisible()
+  await page.getByRole('button', { name: 'Room visualizer' }).click()
+  await page.getByLabel('Interior').selectOption('Workspace')
+  await page.goto('/products/dryback-lvt')
+  await page.getByText('7" × 48"', { exact: true }).click()
+  const table = page.getByRole('region', { name: /7" × 48"/ }).getByRole('table')
+  await expect(table.getByRole('row').filter({ hasText: '4.77' }).first()).toContainText('1,000')
+  await page.getByRole('link', { name: 'Request Samples' }).click()
+  await expect(page.getByRole('heading', { name: 'Request samples' })).toBeVisible()
+  await expect(page.getByLabel('Product', { exact: true })).toHaveValue('dryback-lvt')
 })

@@ -49,11 +49,11 @@ export async function POST(request: Request) {
   const address = field('email', 254)
   const company = field('company', 160)
   const message = field('message', 3500)
-  if (body.website || !['quote', 'contact'].includes(kind) || !name || !/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(address) || !message) {
+  if (body.website || !['quote', 'samples', 'contact'].includes(kind) || !name || !/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(address) || !message) {
     return reply('Check your name, email and inquiry details and try again.', 400)
   }
   const details = ['Contact: ' + name, 'Email: ' + address, 'Company: ' + (company || 'Not specified')]
-  if (kind === 'quote') {
+  if (kind !== 'contact') {
     const province = provinces.find((item) => item === body.province)
     const buyer = buyerTypes.find((item) => item === body.buyer)
     const product = body.product === 'undecided' ? 'Help me select' : body.product === collection.slug ? collection.name : patterns.find((item) => item.slug === body.product)?.name
@@ -69,7 +69,7 @@ export async function POST(request: Request) {
     const result = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: 'Bearer ' + key, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ from, to: [email], reply_to: address, subject: kind === 'quote' ? 'INNOK quote request' : 'INNOK website inquiry', text: [...details, '', message].join('\n') }),
+      body: JSON.stringify({ from, to: [email], reply_to: address, subject: kind === 'quote' ? 'INNOK quote request' : kind === 'samples' ? 'INNOK sample request' : 'INNOK website inquiry', text: [...details, '', message].join('\n') }),
       signal: AbortSignal.timeout(8000),
     })
     if (!result.ok) return unavailable()
