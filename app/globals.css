@@ -34,13 +34,7 @@ a { text-underline-offset: .22em; }
 h1, h2 { font-family: var(--type-serif), Georgia, serif; font-weight: 400; letter-spacing: -.035em; line-height: .93; }
 h1 { font-size: clamp(62px, 8vw, 126px); }
 h2 { font-size: clamp(46px, 6vw, 94px); }
-.hero { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 6fr); gap: clamp(22px, 3.2vw, 54px); padding: clamp(32px, 4vw, 64px) 0; align-items: center; }
-.hero h1 { margin: 24px 0; }
-.hero h1 em { color: #63634c; }
-.lede { font-size: clamp(17px, 1.45vw, 23px); max-width: 29ch; line-height: 1.45; }
 .actions { display: flex; flex-wrap: wrap; gap: 12px 18px; align-items: center; margin-top: 30px; }
-.hero-image { position: relative; min-height: 460px; height: min(41vw, 720px); background: var(--color-stone); }
-.hero-image img { object-fit: cover; object-position: 58% 66%; }
 figcaption { font-size: 11px; color: #5b594f; text-align: right; margin-top: 8px; }
 .collection-band { background: var(--color-stone); border-block: 1px solid var(--rule); }
 .collection-grid, .buyer-grid, .trade-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(20px, 5vw, 78px); align-items: end; padding-block: clamp(42px, 6vw, 92px); }
@@ -86,13 +80,8 @@ figcaption { font-size: 11px; color: #5b594f; text-align: right; margin-top: 8px
 .spec { border-collapse: collapse; width: 100%; margin-block: 12px 20px; }
 .spec caption { text-align: left; font-weight: 700; }
 .spec th, .spec td { text-align: left; border-bottom: 1px solid var(--rule); padding: 9px; }
-@media (max-width: 960px) { .hero-image { min-height: 360px; } }
 @media (max-width: 760px) {
   .masthead { min-height: 65px; }
-  .hero, .collection-grid, .buyer-grid, .trade-grid, .columns { grid-template-columns: 1fr; }
-  .hero { gap: 26px; }
-  .hero-image { height: 68vw; min-height: 235px; }
-  .hero h1 { margin: 14px 0 16px; }
   .actions { margin-top: 20px; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .footer-grid > :first-child { grid-column: 1 / -1; }
@@ -106,8 +95,6 @@ figcaption { font-size: 11px; color: #5b594f; text-align: right; margin-top: 8px
   *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
 }
 
-.material-feature { display: grid; grid-template-columns: .65fr 2fr; gap: 25px; padding-block: clamp(42px, 7vw, 94px); }
-.material-feature > div { display: flex; justify-content: space-between; align-items: end; flex-wrap: wrap; gap: 20px; }
 .viewer { background: var(--color-stone); border: 1px solid var(--rule); }
 .viewer-heading { padding: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
 .viewer-tabs, .family-filter { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -131,7 +118,7 @@ figcaption { font-size: 11px; color: #5b594f; text-align: right; margin-top: 8px
 .configuration { padding-block: 24px; border-top: 1px solid var(--rule); }
 .configuration-tables { margin-top: 10px; }
 @media (max-width: 760px) {
-  .material-feature, .product-lead, .configuration-tables { grid-template-columns: 1fr; }
+  .product-lead, .configuration-tables { grid-template-columns: 1fr; }
 }
 
 .guide-heading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 12px; margin-bottom: 22px; }
@@ -152,4 +139,40 @@ figcaption { font-size: 11px; color: #5b594f; text-align: right; margin-top: 8px
   .mobile-nav nav { position: absolute; z-index: 3; inset: calc(100% + 8px) 0 auto auto; min-width: 210px; display: grid; background: var(--color-paper); border: 1px solid var(--rule); }
   .mobile-nav nav a { padding: 12px 14px; }
   .mobile-nav nav a + a { border-top: 1px solid var(--rule); }
+}
+
+.landing-hero { display: grid; isolation: isolate; min-height: clamp(570px, 51vw, 800px); }
+.landing-gallery, .landing-title { grid-area: 1 / 1; }
+.landing-gallery { position: relative; min-width: 0; background: #484236; }
+.landing-gallery img { object-fit: cover; object-position: 50% 64%; }
+.landing-gallery figcaption { position: absolute; top: 16px; right: var(--gutter); margin: 0; padding: 5px 8px; background: var(--color-paper); color: var(--color-ink); }
+.landing-title { z-index: 1; align-self: end; justify-self: start; margin: 0 0 42px var(--gutter); padding: clamp(28px, 3.4vw, 54px); background: var(--color-paper); }
+.landing-title h1 { font-size: clamp(68px, 7.65vw, 120px); }
+.landing-title em { color: #62604c; }
+.landing-title p { margin-top: 16px; font-size: clamp(16px, 1.25vw, 19px); }
+.landing-title .actions { margin-top: 22px; }
+.landing-index { padding-block: clamp(46px, 6.4vw, 105px); display: grid; grid-template-columns: minmax(0, .86fr) minmax(0, 1.14fr); align-items: start; gap: clamp(28px, 6vw, 106px); }
+.landing-list h2 { font-size: clamp(58px, 7.8vw, 118px); margin: 12px 0; }
+.landing-list nav { margin-top: 34px; border-top: 1px solid var(--rule); }
+.landing-list nav a { display: flex; justify-content: space-between; gap: 12px; align-items: center; min-height: 54px; border-bottom: 1px solid var(--rule); font-weight: 650; }
+.landing-list nav a:hover { color: #6d5132; text-decoration: underline; }
+.landing-grain > div { position: relative; aspect-ratio: 5 / 4; background: var(--color-stone); }
+.landing-grain img { object-fit: cover; }
+.studio-page { padding-top: clamp(32px, 4vw, 70px); }
+.studio-heading { display: flex; justify-content: space-between; align-items: end; gap: 12px 28px; flex-wrap: wrap; margin-bottom: 24px; }
+.studio-heading h1 { font-size: clamp(58px, 7vw, 106px); }
+.studio-page .viewer-tabs { padding-top: 15px; border-bottom: 1px solid var(--rule); }
+.studio-page .material-stage { height: clamp(310px, 43vw, 640px); }
+@media (max-width: 760px) {
+  .landing-hero { display: flex; flex-direction: column; min-height: 0; }
+  .landing-gallery { height: clamp(285px, 68vw, 455px); }
+  .landing-gallery img { object-position: 65% 64%; }
+  .landing-gallery figcaption { top: 12px; right: 16px; }
+  .landing-title { align-self: stretch; margin: -34px 18px 0; padding: 24px 16px 10px; }
+  .landing-title h1 { font-size: clamp(58px, 13vw, 85px); }
+  .landing-title p { max-width: 30ch; }
+  .landing-title .actions { gap: 10px 14px; }
+  .landing-index { grid-template-columns: 1fr; padding-top: 36px; }
+  .landing-list nav { margin-top: 24px; }
+  .landing-grain > div { aspect-ratio: 16 / 9; }
 }

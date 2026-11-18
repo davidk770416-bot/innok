@@ -13,18 +13,18 @@ const studyTexture = '/oak-material-study.png'
 const emptyLayers: readonly Layer[] = []
 const modes = [['surface', '3D surface'], ['construction', 'Exploded view'], ['room', 'Room visualizer']] as const
 
-export function MaterialViewer({ texture, ratio = 4.2, layers = emptyLayers }: { texture?: string; ratio?: number; layers?: readonly Layer[] }) {
+export function MaterialViewer({ texture, ratio = 4.2, layers = emptyLayers, startOpen = false, showHeading = true }: { texture?: string; ratio?: number; layers?: readonly Layer[]; startOpen?: boolean; showHeading?: boolean }) {
   const demo = !texture
-  const [active, setActive] = useState(false)
+  const [active, setActive] = useState(startOpen)
   const [view, setView] = useState<ViewerOptions['mode']>('surface')
   const [room, setRoom] = useState<ViewerOptions['room']>('Gallery')
   const [tone, setTone] = useState<ViewerOptions['tone']>('Natural')
   const construction: readonly Layer[] = demo ? drybackLayers : layers
   return <section className="viewer" aria-label="Material preview">
-    <div className="viewer-heading">
+    {showHeading && <div className="viewer-heading">
       <h2 className="text-5xl">Material preview</h2>
       {demo && <p className="kicker">Illustrative study</p>}
-    </div>
+    </div>}
     <div className="viewer-tabs" aria-label="Preview type">
       {modes.filter(([mode]) => mode !== 'construction' || construction.length > 0).map(([mode, label]) =>
         <button key={mode} type="button" aria-pressed={active && view === mode} onClick={() => { setView(mode); setActive(true) }}>{label}</button>,

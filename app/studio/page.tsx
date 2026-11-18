@@ -1,10 +1,13 @@
-import { PageIntro } from '@/components/editorial'
 import { MaterialViewer } from '@/components/material-viewer'
 
 export const metadata = { title: 'Material Studio', description: 'Explore an illustrative flooring surface, exploded view and room visualizer.' }
+
 export default function Studio() {
-  return <>
-    <PageIntro title="Material studio"><p>Explore a surface, its construction and the room around it.</p></PageIntro>
-    <div className="wrap content-section"><MaterialViewer /></div>
-  </>
+  return <section className="wrap studio-page content-section">
+    <div className="studio-heading">
+      <h1>Material Studio</h1>
+      <p>Dryback LVT · Illustrative study</p>
+    </div>
+    <MaterialViewer startOpen showHeading={false} />
+  </section>
 }
