@@ -1,8 +1,7 @@
 import { formats, mil, squareFeet } from '@/lib/catalogue'
-import Link from 'next/link'
 
 export function ConfigurationGuide() {
-  return <section className="wrap content-section" aria-labelledby="configuration-guide">
+  return <section className="wrap content-section specifications" id="specifications" aria-labelledby="configuration-guide">
     <div className="guide-heading rule-section">
       <h2 id="configuration-guide" className="text-6xl">Standard configurations</h2>
       <p>Confirm pattern availability for your selected configuration.</p>
@@ -23,6 +22,6 @@ export function ConfigurationGuide() {
         </table>
       </div>
     </details>)}
-    <div className="guide-detail"><p>Glue-down installation. Acoustic includes a 1.0 mm PE sound pad.</p><Link className="arrow-link" href="/quote?product=dryback-lvt&samples=1">Request Samples ↗</Link></div>
+    <div className="guide-detail"><p>Glue-down installation. Acoustic includes a 1.0 mm PE sound pad.</p></div>
   </section>
 }

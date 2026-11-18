@@ -82,3 +82,12 @@ test('studio modes and sample flow', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Request samples' })).toBeVisible()
   await expect(page.getByLabel('Product', { exact: true })).toHaveValue('dryback-lvt')
 })
+
+test('technical navigation respects reduced motion', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/products/dryback-lvt')
+  await page.getByRole('link', { name: 'Specifications & packaging' }).click()
+  await expect(page).toHaveURL(/#specifications$/)
+  await expect(page.getByRole('heading', { name: 'Standard configurations' })).toBeInViewport()
+  expect(await page.locator('html').evaluate((root) => getComputedStyle(root).scrollBehavior)).toBe('auto')
+})

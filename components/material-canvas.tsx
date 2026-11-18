@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import {
   AmbientLight, BoxGeometry, Color, DirectionalLight, Group, Mesh,
-  MeshStandardMaterial, PerspectiveCamera, RepeatWrapping, Scene,
+  MeshStandardMaterial, PCFShadowMap, PerspectiveCamera, PlaneGeometry, RepeatWrapping, Scene, ShadowMaterial,
   SRGBColorSpace, TextureLoader, WebGLRenderer,
 } from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
@@ -40,7 +40,7 @@ export default function MaterialCanvas({ mode, texture, ratio, layers, room, ton
     const roomMode = mode === 'room'
     scene.background = new Color(roomMode ? '#dad6ca' : '#e9e3d8')
     const camera = new PerspectiveCamera(40, 1, 0.1, 80)
-    camera.position.set(...(roomMode ? [6.5, 5, 8] : [4.2, 2.7, 4.2]) as [number, number, number])
+    camera.position.set(...(roomMode ? [6.5, 5, 8] : [3.8, 3.25, 4.2]) as [number, number, number])
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.65))
     renderer.domElement.setAttribute('aria-hidden', 'true')
     root.appendChild(renderer.domElement)
@@ -60,6 +60,23 @@ export default function MaterialCanvas({ mode, texture, ratio, layers, room, ton
     const sunlight = new DirectionalLight('#fff1d6', 1.65)
     sunlight.position.set(3, 7, 5)
     scene.add(ambient, sunlight)
+    const surfaceScene = !roomMode
+    const sampleMat = new ShadowMaterial({ opacity: .24 })
+    const samplePlane = new PlaneGeometry(100, 100)
+    if (surfaceScene) {
+      renderer.shadowMap.enabled = true
+      renderer.shadowMap.type = PCFShadowMap
+      sunlight.castShadow = true
+      sunlight.shadow.mapSize.set(512, 512)
+      sunlight.shadow.normalBias = .012
+      const base = new Mesh(samplePlane, sampleMat)
+      base.rotation.x = -Math.PI / 2
+      base.position.y = mode === 'construction'
+        ? -((layers.length - 1) / 2) * Math.min(.32, 1.45 / layers.length) - .038
+        : -.049
+      base.receiveShadow = true
+      scene.add(base)
+    }
     const group = new Group()
     scene.add(group)
     const surf = new MeshStandardMaterial({ color: tone === 'Smoked' ? '#88684e' : '#ffffff', roughness: .76 })
@@ -76,6 +93,7 @@ export default function MaterialCanvas({ mode, texture, ratio, layers, room, ton
       geometry.add(shape)
       const mesh = new Mesh(shape, material)
       mesh.position.set(x, y, z)
+      mesh.castShadow = surfaceScene
       group.add(mesh)
     }
     const top = (edge: MeshStandardMaterial) => [edge, edge, surf, edge, edge, edge]
@@ -133,6 +151,7 @@ export default function MaterialCanvas({ mode, texture, ratio, layers, room, ton
       const { clientWidth, clientHeight } = root
       if (!clientWidth || !clientHeight) return
       camera.aspect = clientWidth / clientHeight
+      if (!roomMode) camera.fov = 42 - Math.min(10, Math.max(0, (camera.aspect - 1) * 10))
       camera.updateProjectionMatrix()
       renderer.setSize(clientWidth, clientHeight)
       draw()
@@ -171,6 +190,9 @@ export default function MaterialCanvas({ mode, texture, ratio, layers, room, ton
       geometry.forEach((shape) => shape.dispose())
       materials.forEach((material) => material.dispose())
       grain.dispose()
+      sunlight.shadow.dispose()
+      samplePlane.dispose()
+      sampleMat.dispose()
       renderer.dispose()
       renderer.domElement.remove()
     }

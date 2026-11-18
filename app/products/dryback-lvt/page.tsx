@@ -1,17 +1,26 @@
-import { ArrowLink, PageIntro } from '@/components/editorial'
+import Link from 'next/link'
+import { PageIntro } from '@/components/editorial'
 import { ConfigurationGuide } from '@/components/configuration-guide'
 import { Catalogue } from '@/components/catalogue'
 import { patterns } from '@/lib/catalogue'
 
-export const metadata = { title: 'Dryback LVT', description: 'Dryback luxury vinyl flooring for glue-down installation. Ask INNOK about current patterns and configurations.' }
+export const metadata = { title: 'Dryback LVT', description: 'INNOK glue-down luxury vinyl flooring. Compare sizes, wear layers and packaging.' }
 
 export default function Dryback() {
   return <>
-    <PageIntro label="Collections / Luxury vinyl" title="Dryback LVT"><p>Glue-down luxury vinyl flooring.</p></PageIntro>
-    <section className="wrap columns content-section rule-section">
-      <div><p className="kicker">Installation method</p><p className="mt-2 mb-4">Glue-down</p><ArrowLink href="/resources">Technical Resources</ArrowLink></div>
-      <div><h2 className="text-5xl mb-4">Patterns</h2><Catalogue entries={patterns} /></div>
-    </section>
+    <PageIntro label="Collections" title="Dryback LVT"><p>Glue-down luxury vinyl planks and tiles.</p></PageIntro>
+    <div className="product-jumps">
+      <nav className="wrap" aria-label="On this page">
+        <a href="#specifications">Specifications &amp; packaging</a>
+        <a href="#patterns">Patterns</a>
+        <Link href="/studio">3D Studio</Link>
+        <Link href="/quote?product=dryback-lvt&amp;samples=1">Request Samples</Link>
+      </nav>
+    </div>
     <ConfigurationGuide />
+    <section className="wrap content-section" id="patterns" aria-labelledby="pattern-heading">
+      <div className="rule-section guide-heading"><h2 id="pattern-heading" className="text-6xl">Patterns</h2></div>
+      <Catalogue entries={patterns} />
+    </section>
   </>
 }
